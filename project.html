@@ -12,58 +12,100 @@
         <div class="nav-container" id="nav-container">
           <ul>
             <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
             <li><a href="team.html">Team</a></li>
-            <li><a href="project.html">Project</a></li>
+            <li><a href="project.html" style="color: #a259f7">Project</a></li>
           </ul>
         </div>
-        <button class="more-btn" id="more-btn" style="display: none">
-          &#9776;
-        </button>
       </nav>
     </header>
-    <main>
-      <section class="project-section">
-        <h2 class="project-title">My Projects</h2>
-        <div class="project-list">
-          <div class="project-card">
-            <img src="mid-my.png" alt="프로젝트1" class="project-img" />
-            <h3>중간고사</h3>
-            <h3>개인 포트폴리오 웹사이트</h3>
-            <p></p>
-            <a
-              href="https://midterm-exam-sepia.vercel.app"
-              target="_blank"
-              class="project-link"
-              >사이트 바로가기</a
-            >
+    <section class="team-hero">
+      <h1>Project</h1>
+      <p>참여한 프로젝트를 소개합니다.</p>
+    </section>
+    <main class="team-main">
+      <div class="team-card">
+        <a href="https://midterm-exam-sepia.vercel.app" target="_blank">
+          <img src="m-p.png" alt="포트폴리오 웹사이트" class="member-img" />
+        </a>
+        <div class="member-info">
+          <h2>포트폴리오 웹사이트</h2>
+          <ul>
+            <li><b>주요 기술</b> : HTML, CSS, JavaScript</li>
+            <li><b>기간</b> : ~ 2025.04</li>
+          </ul>
+          <div class="desc">
+            개인 포트폴리오 웹사이트 제작.<br />
+            반응형 디자인과 다양한 섹션(소개, 팀, 프로젝트 등) 구현.
           </div>
-          <div class="project-card">
-            <img src="mid-team.png" alt="프로젝트2" class="project-img" />
-            <h3>중간고사</h3>
-            <h3>팀 프로젝트</h3>
-            <p>팀원들과 함께 만든 팀 프로젝트입니다.</p>
-            <a
-              href="https://web-team-project.vercel.app"
-              target="_blank"
-              class="project-link"
-              >사이트 바로가기</a
+          <div class="member-links">
+            <a href="https://github.com/dlwpgur03/MidtermExam" target="_blank"
+              >깃허브</a
             >
-          </div>
-          <div class="project-card">
-            <img src="project3.jpg" alt="프로젝트3" class="project-img" />
-            <h3>기말고사</h3>
-            <h3>팀 프로젝트</h3>
-            <p>팀원들과 함께 만든 팀 프로젝트입니다.</p>
-            <a
-              href="https://github.com/dlwpgur03/game"
-              target="_blank"
-              class="project-link"
-              >GitHub 바로가기</a
+            <a href="https://midterm-exam-sepia.vercel.app" target="_blank"
+              >배포 링크</a
             >
           </div>
         </div>
-      </section>
+      </div>
+      <div class="team-card">
+        <a href="https://web-team-project.vercel.app" target="_blank">
+          <img src="m-t.png" alt="팀 협업 프로젝트" class="member-img" />
+        </a>
+        <div class="member-info">
+          <h2>팀 협업 프로젝트</h2>
+          <ul>
+            <li><b>주요 기술</b> : HTML, CSS, JavaScript</li>
+            <li><b>기간</b> : ~ 2025.04</li>
+          </ul>
+          <div class="desc">
+            3인 팀으로 웹 서비스 개발.<br />
+            역할 분담, 코드 리뷰, 협업 툴 적극 활용.
+          </div>
+          <div class="member-links">
+            <a
+              href="https://github.com/dlwpgur03/WebTeamProject"
+              target="_blank"
+              >깃허브</a
+            >
+            <a href="https://web-team-project.vercel.app" target="_blank"
+              >배포 링크</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <a href="https://final-exam-team-beta.vercel.app" target="_blank">
+          <img src="f-t.png" alt="스터디/공부 기록" class="member-img" />
+        </a>
+        <div class="member-info">
+          <h2>팀 협업 프로젝트</h2>
+          <ul>
+            <li><b>주요 기술</b> : HTML, CSS, JavaScript</li>
+            <li><b>기간</b> : ~ 2025.06</li>
+          </ul>
+          <div class="desc">
+            3인 팀으로 웹 서비스 개발.<br />
+            역할 분담, 코드 리뷰, 협업 툴 적극 활용.
+          </div>
+          <div class="member-links">
+            <a href="https://github.com/dlwpgur03/Final-Exam-Team">깃허브</a>
+            <a href="https://final-exam-team-beta.vercel.app" target="_blank"
+              >배포 링크</a
+            >
+          </div>
+        </div>
+      </div>
     </main>
-    <script src="project.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.team-card, .project-card')
+        cards.forEach((card, idx) => {
+          setTimeout(() => {
+            card.classList.add('visible')
+          }, 200 + idx * 200)
+        })
+      })
+    </script>
   </body>
 </html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>About - LJH Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="about.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-container" id="nav-container">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" style="color: #a259f7">About</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="project.html">Project</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <section class="about-hero">
+      <h1>About Me</h1>
+      <p>안녕하세요! <b>이제혁</b> 의 소개 페이지 입니다.<br /></p>
+    </section>
+    <main class="about-main">
+      <div class="profile-card">
+        <h2 style="margin-bottom: 18px">나의 소개</h2>
+        <img src="me.jpg" alt="프로필 사진" class="profile-img" />
+        <div class="profile-info">
+          <h2>이제혁</h2>
+          <ul>
+            <li><b>나이</b> : 23</li>
+            <li><b>MBTI</b> : ENTP</li>
+            <li><b>취미</b> : 드라이브, 게임</li>
+          </ul>
+          <div class="profile-links">
+            <a href="mailto:jehyuk1001@gmail.com">이메일</a>
+            <a href="https://instagram.com/Ljehyuk0_0" target="_blank"
+              >인스타그램</a
+            >
+            <a href="https://github.com/dlwpgur03" target="_blank">깃허브</a>
+          </div>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h2 style="margin-bottom: 18px">나의 활동</h2>
+        <div style="width: 100%; display: flex; justify-content: center">
+          <img
+            src="S.C.P.jpg"
+            alt="S.C.P 활동"
+            style="
+              width: 120px;
+              height: 120px;
+              object-fit: cover;
+              border-radius: 16px;
+              border: 2px solid #a259f7;
+              background: #fff;
+            "
+          />
+        </div>
+        <div class="profile-info">
+          <h2>S.C.P</h2>
+          <ul>
+            <li><b>가입</b> : 22</li>
+            <li><b>활동</b> : 개인 공부를 하고있습니다.</li>
+            <li><b>분야</b> : 웹해킹</li>
+          </ul>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h2 class="card-title">나의 목표</h2>
+        <div
+          class="card-icon"
+          style="margin: 0 auto 24px auto; font-size: 64px; text-align: center"
+        >
+          🎯
+        </div>
+        <div class="profile-info">
+          <h2>Goal</h2>
+          <ul>
+            <li><b>단기 목표</b> : 웹 해킹 기술 습득</li>
+            <li><b>장기 목표</b> : 웹 해킹 관련 전문가 되기</li>
+          </ul>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h2 class="card-title">관심 기술</h2>
+        <div
+          class="card-icon"
+          style="margin: 0 auto 24px auto; font-size: 64px; text-align: center"
+        >
+          🛠️
+        </div>
+        <div class="profile-info">
+          <h2>Stack</h2>
+          <ul>
+            <li><b>JavaScript</b></li>
+            <li><b>React</b></li>
+            <li><b>Node.js</b></li>
+            <li><b>AWS</b></li>
+          </ul>
+          </ul>
+        </div>
+      </div>
+      <div class="profile-card skill-card">
+        <div class="skill-images-title">Skill</div>
+        <div class="skill-images">
+          <img src="JS.svg" alt="JavaScript" />
+          <img src="CSS.svg" alt="CSS3" />
+          <img src="HTML.svg" alt="HTML5" />
+        </div>
+      </div>
+      <div class="profile-card tool-card">
+        <div class="skill-images-title">Tool</div>
+        <div class="skill-images">
+          <img src="GIT.png" alt="GIT" />
+          <img src="NOTION.svg" alt="Notion" />
+          <img src="Discord.png" alt="Discord" />
+        </div>
+      </div>
+    </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.profile-card');
+        cards.forEach((card, idx) => {
+          setTimeout(() => {
+            card.classList.add('visible');
+          }, 200 + idx * 200); // 0.2초 간격으로 순차 등장
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var cards = document.querySelectorAll('.team-card, .project-card');
+        cards.forEach(function(card, idx) {
+          setTimeout(function() {
+            card.classList.add('visible');
+          }, 200 + idx * 200);
+        });
+      });
+    </script>
+  </body>
+</html>

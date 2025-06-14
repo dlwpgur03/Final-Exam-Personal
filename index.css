@@ -62,7 +62,7 @@ html {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 2rem;
+  margin-bottom: 48px; /* 원하는 만큼 조절 */
 }
 
 .button-group button {
@@ -90,6 +90,7 @@ html {
   font-size: 2rem;
   color: #fff;
   animation: bounce 1.5s infinite;
+  margin-top: 5px; /* 원하는 만큼 조절 */
 }
 
 .scroll-arrow {
@@ -120,29 +121,33 @@ html {
 }
 
 .about-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex; /* 가로 정렬 */
-  flex-direction: row; /* 좌우 정렬 */
-  gap: 40px; /* 카드 사이 간격 */
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: nowrap; /* 줄바꿈 없이 한 줄에 */
+  gap: 40px 32px; /* 행, 열 간격 */
+  margin-top: 40px;
 }
 
 .about-card {
   background: #232323;
+  border: 2px solid #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-  padding: 40px 32px;
-  margin: 0;
-  max-width: 350px;
-  min-width: 260px;
-  flex: 1 1 300px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  color: #fff;
+  width: 320px;
+  min-height: 260px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s, opacity 0.5s, transform 0.5s;
+  opacity: 1;
+}
+
+/* 카드 등장 애니메이션 (선택사항) */
+.about-card.hidden {
   opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-  border: 2px solid #fff; /* 카드 테두리 흰색 */
+  transform: translateY(40px);
 }
 
 .about-card.show {
@@ -150,15 +155,21 @@ html {
   transform: translateY(0);
 }
 
-/* 순차 애니메이션을 위한 딜레이 */
-.about-card:nth-child(1) {
-  transition-delay: 0.1s;
+/* 반응형: 화면이 좁아지면 한 줄에 2개, 1개 */
+@media (max-width: 1100px) {
+  .about-card {
+    width: 45vw;
+    min-width: 240px;
+  }
 }
-.about-card:nth-child(2) {
-  transition-delay: 0.4s;
-}
-.about-card:nth-child(3) {
-  transition-delay: 0.7s;
+@media (max-width: 700px) {
+  .about-card {
+    width: 90vw;
+    min-width: 180px;
+  }
+  .about-container {
+    gap: 24px 0;
+  }
 }
 
 @media (max-width: 900px) {

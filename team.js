@@ -79,4 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
   })
+
+  // team.js 등 원하는 위치에 추가
+  const cards = document.querySelectorAll('.team-card')
+  cards.forEach((card, idx) => {
+    setTimeout(() => {
+      card.classList.add('show')
+    }, 200 * idx) // 0.2초 간격으로 등장
+  })
 })

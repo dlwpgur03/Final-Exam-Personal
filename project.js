@@ -61,4 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (menu) menu.remove()
     moreBtn.style.display = window.scrollY > 80 ? 'block' : 'none'
   }
+
+  // 프로젝트 카드 순차 등장 효과
+  const cards = document.querySelectorAll('.project-card')
+  cards.forEach((card, idx) => {
+    setTimeout(() => {
+      card.classList.add('show')
+    }, 200 * idx) // 0.2초 간격으로 등장
+  })
 })
