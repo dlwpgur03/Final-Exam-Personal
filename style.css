@@ -1,0 +1,623 @@
+/* 기본 리셋 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background video */
+video#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: none;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #fff;
+}
+
+header {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 2rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+.container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+.logo {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #fff;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.25rem;
+  padding: 0.75rem 0;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: #ddd;
+}
+nav a.active {
+  color: #ff4081;
+}
+nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Hero Section */
+.hero {
+  height: 70vh;
+  background: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #fff;
+  color: #0070c9;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  margin: 0 0.5rem;
+  min-width: 9ch;
+  text-align: center;
+  font-family: monospace, monospace;
+}
+
+/* Sections */
+section {
+  padding: 4rem 0;
+  background: transparent;
+  min-height: 100vh;
+}
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.about p {
+  max-width: 800px;
+  margin: 0.5rem auto;
+  text-align: center;
+}
+/* About section custom */
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.8rem;
+  background: transparent;
+  margin-top: 5rem;
+}
+.profile-card,
+.about-section-card {
+  background: rgba(20, 20, 20, 0.92);
+  border-radius: 30px;
+  padding: 5rem 7vw;
+  width: 1100px;
+  max-width: 99vw;
+  box-sizing: border-box;
+  box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+  border: 2.5px solid #fff;
+}
+.profile-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+}
+.profile-img-wrap {
+  flex: none;
+}
+.profile-img {
+  width: 420px;
+  height: 420px;
+  border-radius: 32px;
+  object-fit: cover;
+  background: #222;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.17);
+}
+.profile-info {
+  color: #fff;
+  font-size: 1.95rem;
+}
+.profile-info h2 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  white-space: normal;
+}
+.profile-info ul,
+.profile-info li {
+  font-size: 1.42rem;
+}
+.about-section-card h3 {
+  font-size: 2.3rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+.about-card-content {
+  font-size: 1.33rem;
+  line-height: 1.9;
+}
+/* 나의 활동 카드 리뉴얼 */
+.activity-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+  background: rgba(20, 20, 20, 0.92);
+  border-radius: 30px;
+  padding: 5rem 7vw;
+  width: 1100px;
+  max-width: 99vw;
+  box-sizing: border-box;
+  box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto 3.8rem auto;
+  border: 2.5px solid #fff;
+}
+.activity-img-wrap {
+  flex: none;
+}
+.activity-img-wrap img {
+  width: 300px;
+  height: 300px;
+  border-radius: 24px;
+  object-fit: cover;
+  background: #222;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.17);
+}
+.activity-info h3 {
+  font-size: 2.3rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+.activity-title {
+  font-size: 1.65rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+}
+.activity-period {
+  font-size: 1.3rem;
+  color: #bfe6fa;
+}
+#about {
+  padding-top: 1rem !important;
+  scroll-margin-top: 10rem !important;
+}
+#projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#projects h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+.project-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+  position: relative;
+  min-width: 320px;
+  max-width: 400px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.7s cubic-bezier(0.3, 0.8, 0.4, 1.1),
+    transform 0.7s cubic-bezier(0.3, 0.8, 0.4, 1.1);
+}
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.project-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.project-card h3 {
+  margin-bottom: 0.5rem;
+}
+.project-card p {
+  margin-bottom: 1rem;
+}
+.btn-secondary {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #0070c9;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Project card hover and updating */
+.project-card.school-hover {
+  position: relative;
+  overflow: hidden;
+}
+.project-card.school-hover .card-btns {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+.project-card.school-hover:hover .card-btns {
+  opacity: 1;
+  pointer-events: all;
+}
+.project-card.school-hover .card-contents {
+  transition: filter 0.22s;
+}
+.project-card.school-hover:hover .card-contents {
+  filter: blur(1px) brightness(0.7);
+}
+.btn-git,
+.btn-page {
+  display: inline-block;
+  padding: 0.95rem 2.6rem;
+  border-radius: 32px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+  background: #f2ea05;
+  color: #fff;
+  margin: 0 0.4rem;
+  letter-spacing: 0.02em;
+  border: 2.5px solid #222;
+  box-shadow: 0 8px 32px rgba(16, 25, 34, 0.55), 0 2px 12px #000;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.44);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s,
+    transform 0.2s cubic-bezier(0.51, 0.29, 0.72, 1.3);
+}
+.btn-page {
+  background: #12c3ec;
+  color: #111;
+  border: 2.5px solid #10b5e1;
+}
+.btn-git:hover,
+.btn-page:hover {
+  transform: skewY(-7deg) scale(1.08);
+  box-shadow: 0 10px 38px 8px rgba(36, 41, 47, 0.5), 0 2px 16px #12c3ec;
+  filter: brightness(1.19) drop-shadow(0 0 5px #fff9);
+  background: #fff;
+  color: #0a222f;
+  border-color: #12c3ec;
+}
+.project-card.updating::after {
+  content: '업데이트 중...';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+.project-card.updating:hover {
+  filter: blur(1px) brightness(0.7);
+}
+.project-card.updating:hover::after {
+  opacity: 1;
+  pointer-events: auto;
+}
+.project-card.updating * {
+  z-index: 1;
+  position: relative;
+}
+.project-category {
+  margin-bottom: 4.5rem;
+}
+/* Contact */
+.contact p {
+  text-align: center;
+  margin: 0.5rem 0;
+}
+/* Footer */
+footer {
+  background: transparent;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+/* Team section */
+.team-section {
+  padding: 4rem 0 2rem 0;
+  background: transparent;
+}
+.team-section h2 {
+  text-align: center;
+  margin-bottom: 2.2rem;
+  font-size: 2.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+.team-card {
+  background: rgba(22, 28, 39, 0.82);
+  border-radius: 22px;
+  padding: 4rem 6rem 3.5rem 6rem;
+  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+  text-align: center;
+  min-width: 410px;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.62rem;
+  border: 2.5px solid #fff;
+  position: relative;
+}
+.team-detail {
+  margin-top: 1.7rem;
+  font-size: 1.16rem;
+  color: #e7f2fa;
+  text-align: center;
+}
+.team-detail-field {
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
+}
+.team-detail-field a {
+  color: #12c3ec;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 0.4rem;
+  font-size: 1.12rem;
+}
+.team-detail-field a:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+.team-photo {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 2.4rem;
+  background: #e6e6e6;
+  border: 7px solid #12c3ec;
+}
+.team-info strong {
+  font-size: 2.4rem;
+  color: #fff;
+  margin-bottom: 0.15rem;
+  display: block;
+}
+.team-info span {
+  color: #a4d6f8;
+  font-size: 1.65rem;
+}
+#team {
+  padding-top: 7rem !important;
+  scroll-margin-top: 8rem !important;
+}
+.team-intro-card {
+  display: flex;
+  align-items: center;
+  background: rgba(22, 28, 39, 0.92);
+  border-radius: 24px;
+  padding: 2.2rem 3.5rem 2.2rem 2.2rem;
+  margin: 0 auto 3.5rem auto;
+  max-width: 1200px;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(2.5px);
+  border: 2.5px solid #fff;
+}
+.team-intro-logo {
+  width: 84px;
+  height: 84px;
+  margin-right: 2.2rem;
+  border-radius: 18px;
+  background: #fff;
+  object-fit: contain;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+}
+.team-intro-content h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.85rem;
+  color: #fff;
+}
+.team-intro-content p {
+  color: #fff;
+  font-size: 1.18rem;
+  line-height: 1.85;
+  font-weight: 500;
+}
+/* 반응형 */
+@media (max-width: 900px) {
+  header {
+    padding: 1rem 0;
+  }
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0 0.5rem;
+    width: 100vw;
+    max-width: 100vw;
+  }
+  .logo {
+    font-size: 1.25rem;
+    margin-bottom: 0.7rem;
+  }
+  nav {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  nav ul {
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: flex-start;
+    padding-left: 0.5rem;
+    width: 100%;
+  }
+  nav a {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+  }
+  .hero {
+    height: auto;
+    padding-top: 8rem;
+  }
+  .hero h1 {
+    font-size: 1.4rem;
+    word-break: keep-all;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .btn-primary {
+    font-size: 1rem;
+    padding: 0.5rem 1.1rem;
+    min-width: 5ch;
+  }
+  section {
+    padding: 2.5rem 0 1.5rem 0;
+    min-height: 0;
+  }
+  .profile-card,
+  .about-section-card,
+  .activity-card {
+    flex-direction: column !important;
+    width: 98vw !important;
+    padding: 1.1rem 0.6rem !important;
+  }
+  .profile-img {
+    width: 90vw !important;
+    height: auto !important;
+    min-width: 150px !important;
+    max-width: 320px !important;
+    border-radius: 22px;
+  }
+  .activity-img-wrap img {
+    width: 80vw !important;
+    height: auto !important;
+    min-width: 90px !important;
+    max-width: 210px !important;
+    border-radius: 18px;
+  }
+  .about-section-card h3,
+  .activity-info h3,
+  .profile-info h2 {
+    font-size: 1.25rem !important;
+  }
+  .about-card-content,
+  .profile-info ul,
+  .activity-title,
+  .activity-period {
+    font-size: 0.98rem !important;
+  }
+  .projects-grid {
+    flex-direction: column !important;
+    display: flex !important;
+    gap: 1.2rem !important;
+    width: 100% !important;
+  }
+  .project-card {
+    min-width: 0 !important;
+    max-width: 97vw !important;
+    margin: 0 auto 1rem auto !important;
+    padding: 0.9rem 0.6rem !important;
+  }
+  .team-section,
+  #team {
+    padding-top: 2rem !important;
+  }
+  .team-intro-card,
+  .team-card {
+    max-width: 97vw !important;
+    padding: 1.1rem 0.6rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    min-width: 0 !important;
+  }
+  .team-photo {
+    width: 120px !important;
+    height: 120px !important;
+    margin-bottom: 1rem !important;
+    border-width: 4px !important;
+  }
+  .team-info strong {
+    font-size: 1.4rem !important;
+  }
+}
