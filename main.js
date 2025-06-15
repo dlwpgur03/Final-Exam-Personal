@@ -13,27 +13,52 @@ function renderQna() {
       '<div style="color:#888; text-align:center;">아직 남겨진 질문/메시지가 없습니다.</div>'
     return
   }
-  list.innerHTML = qnaData
-    .map(
-      (q, i) => `
-      <div style="background:#181818; border-radius:15px; margin-bottom:1.5rem; padding:1.2rem 1.7rem;">
-        <div style="font-size:1.15rem; color:#fff;">Q. ${q.question}</div>
-        <div style="margin-top:0.7rem;">
-          ${
-            q.answer
-              ? `<div style="color:#3ef58a; font-size:1.04rem; font-weight:500;">A. ${q.answer}</div>`
-              : `
-                <form data-idx="${i}" class="answer-form" style="margin-top:0.3rem;">
-                  <input type="text" class="answer-input" placeholder="답변을 남겨보세요" style="padding:0.4rem 0.7rem; border-radius:8px; border:none; width:70%;"/>
-                  <button type="submit" style="padding:0.45rem 1.4rem; border-radius:7px; background:#12c3ec; color:#fff; font-weight:bold; border:none; margin-left:0.6rem;">답변</button>
-                </form>
-              `
-          }
-        </div>
-      </div>
-      `
-    )
-    .join('')
+  list.innerHTML = ''
+  qnaData.forEach((q, i) => {
+    const card = document.createElement('div')
+    card.style =
+      'background:#181818; border-radius:15px; margin-bottom:1.5rem; padding:1.2rem 1.7rem;'
+
+    const question = document.createElement('div')
+    question.style = 'font-size:1.15rem; color:#fff;'
+    question.textContent = `Q. ${q.question}`
+    card.appendChild(question)
+
+    const answerArea = document.createElement('div')
+    answerArea.style = 'margin-top:0.7rem;'
+
+    if (q.answer) {
+      const answer = document.createElement('div')
+      answer.style = 'color:#3ef58a; font-size:1.04rem; font-weight:500;'
+      answer.textContent = `A. ${q.answer}`
+      answerArea.appendChild(answer)
+    } else {
+      const form = document.createElement('form')
+      form.className = 'answer-form'
+      form.dataset.idx = i
+      form.style = 'margin-top:0.3rem;'
+
+      const input = document.createElement('input')
+      input.type = 'text'
+      input.className = 'answer-input'
+      input.placeholder = '답변을 남겨보세요'
+      input.style =
+        'padding:0.4rem 0.7rem; border-radius:8px; border:none; width:70%;'
+
+      const button = document.createElement('button')
+      button.type = 'submit'
+      button.textContent = '답변'
+      button.style =
+        'padding:0.45rem 1.4rem; border-radius:7px; background:#12c3ec; color:#fff; font-weight:bold; border:none; margin-left:0.6rem;'
+
+      form.appendChild(input)
+      form.appendChild(button)
+      answerArea.appendChild(form)
+    }
+
+    card.appendChild(answerArea)
+    list.appendChild(card)
+  })
   // 답변 폼 이벤트 등록
   document.querySelectorAll('.answer-form').forEach((form) => {
     form.onsubmit = (e) => {
