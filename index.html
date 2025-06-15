@@ -1,0 +1,1248 @@
+.project-card { opacity: 0; transform: translateY(60px); transition: opacity
+0.7s cubic-bezier(0.3,0.8,0.4,1.1), transform 0.7s
+cubic-bezier(0.3,0.8,0.4,1.1); } .project-card.visible { opacity: 1; transform:
+translateY(0); }
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>개인 웹 페이지</title>
+    <style>
+      /* 기본 리셋 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .project-card.school-hover {
+        position: relative;
+        overflow: hidden;
+      }
+      .project-card.school-hover .card-btns {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s;
+      }
+      .project-card.school-hover:hover .card-btns {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .project-card.school-hover .card-contents {
+        transition: filter 0.22s;
+      }
+      .project-card.school-hover:hover .card-contents {
+        filter: blur(1px) brightness(0.7);
+      }
+      .btn-git,
+      .btn-page {
+        display: inline-block;
+        padding: 0.95rem 2.6rem;
+        border-radius: 32px;
+        font-size: 1.25rem;
+        font-weight: bold;
+        text-decoration: none;
+        background: #f2ea05; /* 더 짙은 네이비 */
+        color: #fff;
+        margin: 0 0.4rem;
+        letter-spacing: 0.02em;
+        border: 2.5px solid #222; /* 더 진한 테두리 */
+        box-shadow: 0 8px 32px rgba(16, 25, 34, 0.55), 0 2px 12px #000;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.44);
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s,
+          transform 0.2s cubic-bezier(0.51, 0.29, 0.72, 1.3);
+      }
+      .btn-page {
+        background: #12c3ec; /* 더 진한 파랑/민트 */
+        color: #111;
+        border: 2.5px solid #10b5e1;
+      }
+      .btn-git:hover,
+      .btn-page:hover {
+        transform: skewY(-7deg) scale(1.08);
+        box-shadow: 0 10px 38px 8px rgba(36, 41, 47, 0.5), 0 2px 16px #12c3ec;
+        filter: brightness(1.19) drop-shadow(0 0 5px #fff9);
+        background: #fff;
+        color: #0a222f;
+        border-color: #12c3ec;
+      }
+      .project-card.updating::after {
+        content: '업데이트 중...';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+        z-index: 2;
+      }
+      .project-card.updating:hover {
+        filter: blur(1px) brightness(0.7);
+      }
+      .project-card.updating:hover::after {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .project-card.updating * {
+        z-index: 1;
+        position: relative;
+      }
+
+      /* Background video */
+      video#bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+
+      /* Full-height coverage */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* 레이아웃 */
+      body {
+        background: none;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #fff;
+      }
+      header {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        padding: 2rem 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+      }
+      .container {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+      }
+      .logo {
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: #fff;
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+      }
+      nav a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.25rem;
+        padding: 0.75rem 0;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #ddd;
+      }
+
+      /* Active nav link */
+      nav a.active {
+        color: #ff4081;
+      }
+
+      nav {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 70vh;
+        background: transparent;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+      .btn-primary {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: #fff;
+        color: #0070c9;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        margin: 0 0.5rem;
+        min-width: 9ch;
+        text-align: center;
+        font-family: monospace, monospace;
+      }
+
+      /* Sections */
+      section {
+        padding: 4rem 0;
+        background: transparent;
+        min-height: 100vh;
+      }
+      section h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .about p {
+        max-width: 800px;
+        margin: 0.5rem auto;
+        text-align: center;
+      }
+
+      /* Projects */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+      .project-card {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 6px;
+        transition: box-shadow 0.2s;
+        position: relative;
+      }
+      .project-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .project-card h3 {
+        margin-bottom: 0.5rem;
+      }
+      .project-card p {
+        margin-bottom: 1rem;
+      }
+      .btn-secondary {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: #0070c9;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      /* Contact */
+      .contact p {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      /* Footer */
+      footer {
+        background: transparent;
+        padding: 2rem 0;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      /* 반응형 */
+      @media (max-width: 600px) {
+        .container {
+          flex-direction: column;
+          text-align: center;
+        }
+        nav ul {
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 0.5rem;
+        }
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* About section custom (REPLACED) */
+      .about {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3.8rem;
+        background: transparent;
+        margin-top: 5rem;
+      }
+
+      .profile-card,
+      .about-section-card {
+        background: rgba(20, 20, 20, 0.92);
+        border-radius: 30px;
+        padding: 5rem 7vw;
+        width: 1100px;
+        max-width: 99vw;
+        box-sizing: border-box;
+        box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.25);
+        margin: 0 auto;
+        border: 2.5px solid #fff;
+      }
+
+      .profile-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+      }
+
+      .profile-img-wrap {
+        flex: none;
+      }
+      .profile-img {
+        width: 420px;
+        height: 420px;
+        border-radius: 32px;
+        object-fit: cover;
+        background: #222;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.17);
+      }
+      .profile-info {
+        color: #fff;
+        font-size: 1.95rem;
+      }
+      .profile-info h2 {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        white-space: normal;
+      }
+      .profile-info ul,
+      .profile-info li {
+        font-size: 1.42rem;
+      }
+      .about-section-card h3 {
+        font-size: 2.3rem;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+      }
+      .about-card-content {
+        font-size: 1.33rem;
+        line-height: 1.9;
+      }
+      /* 나의 활동 카드 리뉴얼 */
+      .activity-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+        background: rgba(20, 20, 20, 0.92);
+        border-radius: 30px;
+        padding: 5rem 7vw;
+        width: 1100px;
+        max-width: 99vw;
+        box-sizing: border-box;
+        box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.25);
+        margin: 0 auto 3.8rem auto;
+        border: 2.5px solid #fff;
+      }
+      .activity-img-wrap {
+        flex: none;
+      }
+      .activity-img-wrap img {
+        width: 300px;
+        height: 300px;
+        border-radius: 24px;
+        object-fit: cover;
+        background: #222;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.17);
+      }
+      .activity-info h3 {
+        font-size: 2.3rem;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+      }
+      .activity-title {
+        font-size: 1.65rem;
+        font-weight: bold;
+        margin-bottom: 1.2rem;
+      }
+      .activity-period {
+        font-size: 1.3rem;
+        color: #bfe6fa;
+      }
+
+      @media (max-width: 1100px) {
+        .profile-card,
+        .about-section-card {
+          width: 98vw;
+          padding: 2.1rem 0.8rem;
+        }
+        .profile-img {
+          width: 180px;
+          height: 180px;
+        }
+        .activity-img-wrap img {
+          width: 120px;
+          height: 120px;
+        }
+      }
+      #about {
+        padding-top: 1rem !important;
+        scroll-margin-top: 10rem !important;
+      }
+      #projects {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #projects h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .projects-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+      }
+      .project-card {
+        min-width: 320px;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .project-category {
+        margin-bottom: 4.5rem;
+      }
+    </style>
+    <style>
+      .project-card {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 0.7s cubic-bezier(0.3, 0.8, 0.4, 1.1),
+          transform 0.7s cubic-bezier(0.3, 0.8, 0.4, 1.1);
+      }
+      .project-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+    <style>
+      .team-intro-card {
+        display: flex;
+        align-items: center;
+        background: rgba(22, 28, 39, 0.92);
+        border-radius: 24px;
+        padding: 2.2rem 3.5rem 2.2rem 2.2rem;
+        margin: 0 auto 3.5rem auto;
+        max-width: 1200px;
+        box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+        backdrop-filter: blur(2.5px);
+        border: 2.5px solid #fff;
+      }
+      .team-intro-logo {
+        width: 84px;
+        height: 84px;
+        margin-right: 2.2rem;
+        border-radius: 18px;
+        background: #fff;
+        object-fit: contain;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+      }
+      .team-intro-content h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.85rem;
+        color: #fff;
+      }
+      .team-intro-content p {
+        color: #fff;
+        font-size: 1.18rem;
+        line-height: 1.85;
+        font-weight: 500;
+      }
+      @media (max-width: 800px) {
+        .team-intro-card {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1.3rem 1.2rem;
+          max-width: 97vw;
+        }
+        .team-intro-logo {
+          margin-right: 0;
+          margin-bottom: 1.1rem;
+        }
+      }
+      .team-section {
+        padding: 4rem 0 2rem 0;
+        background: transparent;
+      }
+      .team-section h2 {
+        text-align: center;
+        margin-bottom: 2.2rem;
+        font-size: 2.1rem;
+        font-weight: bold;
+        color: #fff;
+      }
+      .team-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+      }
+      .team-card {
+        background: rgba(22, 28, 39, 0.82);
+        border-radius: 22px;
+        padding: 4rem 6rem 3.5rem 6rem;
+        box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+        text-align: center;
+        min-width: 410px;
+        max-width: 540px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 1.62rem;
+        border: 2.5px solid #fff;
+        position: relative;
+      }
+      .team-detail {
+        margin-top: 1.7rem;
+        font-size: 1.16rem;
+        color: #e7f2fa;
+        text-align: center;
+      }
+      .team-detail-field {
+        margin-bottom: 0.4rem;
+        line-height: 1.5;
+      }
+      .team-detail-field a {
+        color: #12c3ec;
+        font-weight: bold;
+        text-decoration: none;
+        margin: 0 0.4rem;
+        font-size: 1.12rem;
+      }
+      .team-detail-field a:hover {
+        text-decoration: underline;
+        color: #fff;
+      }
+      .team-photo {
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 2.4rem;
+        background: #e6e6e6;
+        border: 7px solid #12c3ec;
+      }
+      .team-info strong {
+        font-size: 2.4rem;
+        color: #fff;
+        margin-bottom: 0.15rem;
+        display: block;
+      }
+      .team-info span {
+        color: #a4d6f8;
+        font-size: 1.65rem;
+      }
+      #team {
+        padding-top: 7rem !important;
+        scroll-margin-top: 8rem !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fullscreen background video -->
+    <video id="bg-video" autoplay muted loop>
+      <source src="img/BackGround.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo">Portfolio</div>
+        <nav>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div>
+        <h1 id="hero-text"></h1>
+        <p>웹 개발자 / 디자이너 / 기타</p>
+        <a
+          href="https://github.com/dlwpgur03"
+          class="btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GIT</a
+        >
+        <a
+          href="https://blog.naver.com/jehyuk03"
+          class="btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          >NaverBlog</a
+        >
+        <a
+          href="https://ljh-03.tistory.com"
+          class="btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Tistory</a
+        >
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about">
+      <div class="profile-card">
+        <div class="profile-img-wrap">
+          <img src="img/me.jpg" alt="프로필 사진" class="profile-img" />
+        </div>
+        <div class="profile-info">
+          <h2><span style="font-size: rem">😊</span> 나의 프로필</h2>
+          <ul>
+            <li><b>이름:</b> 이제혁</li>
+            <li><b>학과:</b> 정보보호학과</li>
+            <li><b>학번:</b> 22학번</li>
+            <li><b>MBTI:</b> ENTP</li>
+            <li><b>취미:</b> 드라이브🚗 / 게임🎮</li>
+            <li><b>이메일:</b> Jehyuk1001@gmail.com</li>
+            <li><b>전화번호:</b> 010-8981-2027</li>
+          </ul>
+        </div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-img-wrap">
+          <img src="img/S.C.P.jpg" alt="S.C.P" />
+        </div>
+        <div class="activity-info">
+          <h3>🥇 나의 활동</h3>
+          <div class="activity-title">S.C.P</div>
+          <div class="activity-period">
+            2022~현재<br />
+            웹 해킹 대회 참가, 웹 해킹 관련 공부/실습, JBU CTF 문제 출제
+          </div>
+        </div>
+      </div>
+      <div class="about-section-card">
+        <h3>🚀 나의 관심분야 & 목표</h3>
+        <div class="about-card-content">
+          웹 해킹 & 웹 보안<br />
+          최신 웹 취약점 분석과 실제 방어 기술에 관심이 많습니다.<br />
+          앞으로 안전한 웹 서비스를 만들고, 보안 컨설팅 전문가로 성장하는 것이
+          목표입니다. <br />
+        </div>
+      </div>
+      <div class="about-section-card">
+        <h3>💡 나의 기술스택</h3>
+        <div class="about-card-content">
+          HTML, CSS, JavaScript, Python, Java<br />
+          웹 취약점 진단 및 보안 툴 경험<br />
+          새로운 기술 학습과 실전 적용에 열정이 있습니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <div class="project-category">
+        <h3 class="project-category-title">학교</h3>
+        <div class="container projects-grid">
+          <div class="project-card school-hover">
+            <div class="card-contents">
+              <h4>중간고사 개인</h4>
+              <img
+                src="img/m-p.png"
+                alt="중간고사 개인"
+                style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+              />
+              <p>프로젝트 A 설명을 작성하세요.</p>
+            </div>
+            <div class="card-btns">
+              <a
+                href="https://github.com/dlwpgur03/MidtermExam"
+                class="btn-git"
+                target="_blank"
+                >GIT</a
+              >
+              <a
+                href="https://midterm-exam-sepia.vercel.app"
+                class="btn-page"
+                target="_blank"
+                >PAGE</a
+              >
+            </div>
+          </div>
+          <div class="project-card school-hover">
+            <div class="card-contents">
+              <h4>중간고사 팀플</h4>
+              <img
+                src="img/m-t.png"
+                alt="프로젝트 이미지"
+                style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+              />
+              <p>프로젝트 B 설명을 작성하세요.</p>
+            </div>
+            <div class="card-btns">
+              <a
+                href="https://github.com/dlwpgur03/WebTeamProject"
+                class="btn-git"
+                target="_blank"
+                >GIT</a
+              >
+              <a
+                href="https://web-team-project.vercel.app#"
+                class="btn-page"
+                target="_blank"
+                >PAGE</a
+              >
+            </div>
+          </div>
+          <div class="project-card school-hover">
+            <div class="card-contents">
+              <h4>기말고사 팀플</h4>
+              <img
+                src="img/f-t.png"
+                alt="프로젝트 이미지"
+                style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+              />
+              <p>프로젝트 C 설명을 작성하세요.</p>
+            </div>
+            <div class="card-btns">
+              <a
+                href="https://github.com/dlwpgur03/Final-Exam-Team"
+                class="btn-git"
+                target="_blank"
+                >GIT</a
+              >
+              <a
+                href="https://final-exam-team-beta.vercel.app"
+                class="btn-page"
+                target="_blank"
+                >PAGE</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-category">
+        <h3 class="project-category-title">동아리</h3>
+        <div class="container projects-grid">
+          <div class="project-card updating">
+            <h4>동아리 프로젝트 1</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>동아리에서 진행한 첫 번째 프로젝트입니다.</p>
+          </div>
+          <div class="project-card updating">
+            <h4>동아리 프로젝트 2</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>동아리에서 진행한 두 번째 프로젝트입니다.</p>
+          </div>
+          <div class="project-card updating">
+            <h4>동아리 프로젝트 3</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>동아리에서 진행한 세 번째 프로젝트입니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="project-category">
+        <h3 class="project-category-title">개인</h3>
+        <div class="container projects-grid">
+          <div class="project-card updating">
+            <h4>개인 프로젝트 1</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>스스로 학습하며 만든 프로젝트입니다.</p>
+          </div>
+          <div class="project-card updating">
+            <h4>개인 프로젝트 2</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>새로운 기술을 적용한 개인 프로젝트입니다.</p>
+          </div>
+          <div class="project-card updating">
+            <h4>동아리 프로젝트 3</h4>
+            <img
+              src="#"
+              alt="프로젝트 이미지"
+              style="width: 100%; border-radius: 8px; margin-bottom: 1rem"
+            />
+            <p>동아리에서 진행한 세 번째 프로젝트입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="team-section">
+      <div class="team-intro-card">
+        <img src="img/CMD.png" alt="CMD 로고" class="team-intro-logo" />
+        <div class="team-intro-content">
+          <h3>우리 팀 CMD를 소개합니다!</h3>
+          <p>
+            팀명의 뜻은 <b>Coding master dayo</b> 입니다.<br />
+            이렇게 지은 이유는 CMD(명령프롬프트)에서 영감을 받아 임팩트 있게
+            3행시 느낌으로 지었으며,<br />
+            코딩 마스터를 하겠다는 뜻을 담았습니다.
+          </p>
+        </div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <img src="img/me.jpg" alt="이제혁" class="team-photo" />
+          <div class="team-info">
+            <strong>이제혁</strong>
+            <span>팀원</span>
+            <div class="team-detail">
+              <div class="team-detail-field">학번: 92212996</div>
+              <div class="team-detail-field">📱 010-8981-2027</div>
+              <div class="team-detail-field">
+                ✉️ <b>jehyuk1001@gmail.com</b>
+              </div>
+              <div class="team-detail-field">
+                <a href="https://github.com/dlwpgur03" target="_blank"
+                  >GitHub</a
+                >
+                |
+                <a href="https://final-exam-personal.vercel.app" target="_blank"
+                  >개인페이지</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="team-card">
+          <img src="img/PHB.png" alt="박한빈" class="team-photo" />
+          <div class="team-info">
+            <strong>박한빈</strong>
+            <span>팀장</span>
+            <div class="team-detail">
+              <div class="team-detail-field">학번: 92212867</div>
+              <div class="team-detail-field">📱 010-9737-1732</div>
+              <div class="team-detail-field">
+                ✉️ <b>vinny122400@gmail.com</b>
+              </div>
+              <div class="team-detail-field">
+                <a href="https://github.com/han122400" target="_blank"
+                  >GitHub</a
+                >
+                |
+                <a href="https://web-final-mypage.vercel.app" target="_blank"
+                  >개인페이지</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="team-card">
+          <img src="img/KSG.png" alt="김서진" class="team-photo" />
+          <div class="team-info">
+            <strong>김서진</strong>
+            <span>팀원</span>
+            <div class="team-detail">
+              <div class="team-detail-field">학번: 92212764</div>
+              <div class="team-detail-field">📱 010-7124-6930</div>
+              <div class="team-detail-field">✉️ <b>nafi6@naver.com</b></div>
+              <div class="team-detail-field">
+                <a href="https://github.com/Daru0613" target="_blank">GitHub</a>
+                |
+                <a
+                  href="https://final-exam-portfolio-zeta.vercel.app"
+                  target="_blank"
+                  >개인페이지</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section
+      id="contact"
+      class="contact"
+      style="padding-top: 8.5rem; scroll-margin-top: 9.5rem"
+    >
+      <h2>방문자 카운터 & 익명 메시지/질문</h2>
+      <div style="text-align: center; margin-bottom: 2rem">
+        <span style="font-size: 1.2rem">방문자:</span>
+        <span
+          id="visitor-count"
+          style="font-size: 1.5rem; color: gold; font-weight: bold"
+          >0</span
+        >
+        명
+        <div style="font-size: 0.8rem; color: #bbb; margin-top: 0.3rem">
+          (이 브라우저 기준, 새로고침 시 1씩 증가)
+        </div>
+      </div>
+
+      <form id="qna-form" style="text-align: center">
+        <input
+          type="text"
+          id="question-input"
+          placeholder="궁금한 점, 질문, 응원의 말 등 자유롭게 남겨보세요!"
+          style="
+            width: 85%;
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.12rem;
+          "
+        />
+        <button
+          type="submit"
+          style="
+            padding: 1.2rem 2.4rem;
+            margin-left: 0.7rem;
+            border-radius: 12px;
+            background: #12c3ec;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            font-size: 1.07rem;
+          "
+        >
+          등록
+        </button>
+      </form>
+
+      <div
+        id="qna-list"
+        style="max-width: 850px; margin: 2rem auto 0 auto"
+      ></div>
+    </section>
+
+    <script>
+      // 방문자 카운트 (localStorage 사용)
+      let visitorCount =
+        parseInt(localStorage.getItem('visitor-count') || '0', 10) + 1
+      localStorage.setItem('visitor-count', visitorCount)
+      document.getElementById('visitor-count').textContent = visitorCount
+
+      // QnA 데이터 저장
+      let qnaData = JSON.parse(localStorage.getItem('qna-list') || '[]')
+      function renderQna() {
+        const list = document.getElementById('qna-list')
+        if (!qnaData.length) {
+          list.innerHTML =
+            '<div style="color:#888; text-align:center;">아직 남겨진 질문/메시지가 없습니다.</div>'
+          return
+        }
+        list.innerHTML = qnaData
+          .map(
+            (q, i) => `
+          <div style="background:#181818; border-radius:15px; margin-bottom:1.5rem; padding:1.2rem 1.7rem;">
+            <div style="font-size:1.15rem; color:#fff;">Q. ${q.question}</div>
+            <div style="margin-top:0.7rem;">
+              ${
+                q.answer
+                  ? `<div style="color:#3ef58a; font-size:1.04rem; font-weight:500;">A. ${q.answer}</div>`
+                  : `
+                    <form data-idx="${i}" class="answer-form" style="margin-top:0.3rem;">
+                      <input type="text" class="answer-input" placeholder="답변을 남겨보세요" style="padding:0.4rem 0.7rem; border-radius:8px; border:none; width:70%;"/>
+                      <button type="submit" style="padding:0.45rem 1.4rem; border-radius:7px; background:#12c3ec; color:#fff; font-weight:bold; border:none; margin-left:0.6rem;">답변</button>
+                    </form>
+                  `
+              }
+            </div>
+          </div>
+          `
+          )
+          .join('')
+        // 답변 폼 이벤트 등록
+        document.querySelectorAll('.answer-form').forEach((form) => {
+          form.onsubmit = (e) => {
+            e.preventDefault()
+            const idx = parseInt(form.dataset.idx, 10)
+            const input = form.querySelector('.answer-input')
+            if (input.value.trim()) {
+              qnaData[idx].answer = input.value.trim()
+              localStorage.setItem('qna-list', JSON.stringify(qnaData))
+              renderQna()
+            }
+          }
+        })
+      }
+
+      // 질문 등록
+      document.getElementById('qna-form').onsubmit = function (e) {
+        e.preventDefault()
+        const input = document.getElementById('question-input')
+        const text = input.value.trim()
+        if (text.length === 0) return
+        qnaData.unshift({ question: text, answer: '' })
+        localStorage.setItem('qna-list', JSON.stringify(qnaData))
+        input.value = ''
+        renderQna()
+      }
+
+      renderQna()
+    </script>
+
+    <!-- Footer -->
+    <footer>© 2025 이름. All rights reserved.</footer>
+
+    <script>
+      // 부드러운 스크롤
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault()
+          const tgt = document.querySelector(link.getAttribute('href'))
+          if (tgt) tgt.scrollIntoView({ behavior: 'smooth' })
+        })
+      })
+
+      // Highlight nav link based on section visibility
+      const sections = document.querySelectorAll('section[id]')
+      const navLinks = document.querySelectorAll('nav ul li a')
+
+      const observerOptions = { root: null, rootMargin: '0px', threshold: 0.6 }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            navLinks.forEach((link) => link.classList.remove('active'))
+            const id = entry.target.getAttribute('id')
+            const activeLink = document.querySelector(
+              `nav ul li a[href="#${id}"]`
+            )
+            if (activeLink) activeLink.classList.add('active')
+          }
+        })
+      }, observerOptions)
+
+      sections.forEach((section) => observer.observe(section))
+      // 버튼 랜덤 텍스트 애니메이션
+      document.querySelectorAll('.btn-primary').forEach((button) => {
+        const originalText = button.textContent
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+        let intervalId
+
+        // 랜덤 텍스트 생성 함수
+        function startRandom() {
+          intervalId = setInterval(() => {
+            let scrambled = ''
+            for (let i = 0; i < originalText.length; i++) {
+              scrambled += chars.charAt(
+                Math.floor(Math.random() * chars.length)
+              )
+            }
+            button.textContent = scrambled
+          }, 50)
+        }
+
+        // 버튼이 opacity 1로 나타나면 랜덤 시작
+        const observer = new MutationObserver(() => {
+          if (button.style.opacity === '1') {
+            startRandom()
+          } else {
+            clearInterval(intervalId)
+            button.textContent = originalText
+          }
+        })
+        observer.observe(button, {
+          attributes: true,
+          attributeFilter: ['style'],
+        })
+
+        button.addEventListener('mouseenter', () => {
+          clearInterval(intervalId)
+          button.textContent = originalText
+        })
+
+        button.addEventListener('mouseleave', () => {
+          startRandom()
+        })
+      })
+
+      // HERO 애니메이션: 랜덤 → '안녕하세요!' → '이제혁의 PortFolio 홈페이지 입니다'
+      document.addEventListener('DOMContentLoaded', () => {
+        const heroTextEl = document.getElementById('hero-text')
+        const firstText = '안녕하세요!'
+        const finalText = '이제혁의 PortFolio|홈페이지 입니다'
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+        const specials = '!@#$%^&*()_+-='
+
+        function randomStr(length, isLastSpecial = false) {
+          let s = ''
+          for (let i = 0; i < length; i++) {
+            if (isLastSpecial && i === length - 1) {
+              s += specials.charAt(Math.floor(Math.random() * specials.length))
+            } else {
+              s += letters.charAt(Math.floor(Math.random() * letters.length))
+            }
+          }
+          return s
+        }
+
+        function revealLeftToRight(str, callback) {
+          let fixed = ''
+          let idx = 0
+          let frame = 0
+          function next() {
+            let rand = randomStr(str.length - fixed.length, true)
+            heroTextEl.textContent = fixed + rand
+            if (frame < 8) {
+              frame++
+              setTimeout(next, 35)
+            } else if (fixed.length < str.length) {
+              fixed += str[fixed.length]
+              frame = 0
+              setTimeout(next, 70)
+            } else {
+              callback && callback()
+            }
+          }
+          next()
+        }
+
+        function revealAndExpand(from, to) {
+          let fixed = ''
+          let frame = 0
+          let currentLength = from.length
+          function step() {
+            if (currentLength < to.length) {
+              let rand = randomStr(currentLength - fixed.length, false)
+              heroTextEl.innerHTML = (fixed + rand).replace('|', '<br>')
+              if (frame < 6) {
+                frame++
+                setTimeout(step, 28)
+              } else {
+                fixed += to[fixed.length]
+                frame = 0
+                if (fixed.length === currentLength) {
+                  currentLength++
+                }
+                setTimeout(step, 55)
+              }
+            } else {
+              if (fixed.length < to.length) {
+                let rand = randomStr(to.length - fixed.length, false)
+                heroTextEl.innerHTML = (fixed + rand).replace('|', '<br>')
+                if (frame < 6) {
+                  frame++
+                  setTimeout(step, 28)
+                } else {
+                  fixed += to[fixed.length]
+                  frame = 0
+                  setTimeout(step, 55)
+                }
+              } else {
+                heroTextEl.innerHTML = to.replace('|', '<br>')
+                document
+                  .querySelectorAll('.btn-primary')
+                  .forEach((btn) => (btn.style.opacity = '1'))
+              }
+            }
+          }
+          step()
+        }
+
+        function startAnimation() {
+          let iterations = 0
+          const maxIterations = 5
+          function firstRand() {
+            if (iterations < maxIterations) {
+              heroTextEl.textContent = randomStr(6, true)
+              iterations++
+              setTimeout(firstRand, 40)
+            } else {
+              revealLeftToRight(firstText, () => {
+                setTimeout(() => {
+                  revealAndExpand(firstText, finalText)
+                }, 800)
+              })
+            }
+          }
+          firstRand()
+        }
+
+        startAnimation()
+      })
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.project-card')
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // 등장 순서대로 딜레이 추가
+                const idx = Array.from(cards).indexOf(entry.target)
+                entry.target.style.transitionDelay = idx * 0.12 + 's'
+                entry.target.classList.add('visible')
+                obs.unobserve(entry.target)
+              }
+            })
+          },
+          { threshold: 0.18 }
+        )
+        cards.forEach((card) => obs.observe(card))
+      })
+    </script>
+  </body>
+</html>
